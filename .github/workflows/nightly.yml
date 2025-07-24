@@ -2,8 +2,8 @@ name: Nightly Build
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 00:00 自动触发
+#  schedule:
+#    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout main rikkahub repository
         uses: actions/checkout@v4
         with:
-          repository: rikkahub/rikkahub
+          repository: EricLeeaaaaa/rikkahub
           path: rikkahub
           fetch-depth: 0
 
@@ -40,9 +40,9 @@ jobs:
 
       - name: Apply nightly patch
         run: |
-          # 将 patch 文件应用到主仓库的 app/build.gradle.kts
+          # Apply patch file to app/build.gradle.kts
           cat nightly-config/patch/nightly.gradle.kts >> rikkahub/app/build.gradle.kts
-          # 复制虚假的 google-services.json
+          # Copy dummy google-services.json
           cp nightly-config/patch/google-services.json rikkahub/app/google-services.json
 
       - name: Make gradlew executable
@@ -51,7 +51,7 @@ jobs:
       - name: Build Release APK
         run: |
           cd rikkahub
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew --no-daemon --parallel assembleRelease --stacktrace
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
