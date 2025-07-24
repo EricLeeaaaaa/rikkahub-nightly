@@ -1,0 +1,60 @@
+name: Nightly Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 00:00 自动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout nightly config repository
+        uses: actions/checkout@v4
+        with:
+          path: nightly-config
+
+      - name: Checkout main rikkahub repository
+        uses: actions/checkout@v4
+        with:
+          repository: rikkahub/rikkahub
+          path: rikkahub
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('rikkahub/**/*.gradle*', 'rikkahub/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Apply nightly patch
+        run: |
+          # 将 patch 文件应用到主仓库的 app/build.gradle.kts
+          cat nightly-config/patch/nightly.gradle.kts >> rikkahub/app/build.gradle.kts
+          # 复制虚假的 google-services.json
+          cp nightly-config/patch/google-services.json rikkahub/app/google-services.json
+
+      - name: Make gradlew executable
+        run: chmod +x rikkahub/gradlew
+
+      - name: Build Release APK
+        run: |
+          cd rikkahub
+          ./gradlew assembleRelease --stacktrace
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-apks
+          path: rikkahub/app/build/outputs/apk/release/*.apk
