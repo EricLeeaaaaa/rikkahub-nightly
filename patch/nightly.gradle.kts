@@ -1,6 +1,10 @@
 // patch/nightly.gradle.kts
 
 android {
+    defaultConfig {
+        versionCode = 1
+        versionName = "nightly"
+    }
     buildTypes {
         named("release") {
             // 1. 为 release 构建类型添加 .nightly 后缀，防止与正式版冲突
@@ -18,9 +22,8 @@ android {
         outputs.all {
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
                 val variantName = name
-                val versionName = defaultConfig.versionName
-                // 输出文件名示例: rikkahub-1.3.2-nightly-release.apk
-                outputFileName = "rikkahub-${versionName}-nightly-${variantName}.apk"
+                // 输出文件名示例: rikkahub-nightly-release.apk
+                outputFileName = "rikkahub-nightly-${variantName}.apk"
             }
         }
     }
