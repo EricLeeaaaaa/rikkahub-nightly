@@ -7,20 +7,22 @@ android {
     }
     buildTypes {
         named("release") {
-            // Add .nightly suffix to application ID
+            // Append .nightly to application ID
             applicationIdSuffix = ".nightly"
 
-            // Use debug signing for CI
+            // Use debug signing for CI builds
             signingConfig = signingConfigs.getByName("debug")
+
+            // Set app display name for Nightly builds
+            resValue("string", "app_name", "Rikkahub Nightly")
         }
     }
 
-    // Customize nightly APK output filename
+    // Customize Nightly APK output filename
     applicationVariants.all {
         outputs.all {
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
                 val variantName = name
-                // Example: rikkahub-nightly-release.apk
                 outputFileName = "rikkahub-nightly-${variantName}.apk"
             }
         }

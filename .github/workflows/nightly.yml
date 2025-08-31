@@ -53,8 +53,12 @@ jobs:
           cd rikkahub
           ./gradlew --no-daemon --parallel assembleRelease --stacktrace
 
+      - name: Generate timestamp
+        id: timestamp
+        run: echo "BUILD_TIMESTAMP=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-apks
+          name: ${{ env.BUILD_TIMESTAMP }}-nightly
           path: rikkahub/app/build/outputs/apk/release/*.apk
