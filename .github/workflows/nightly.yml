@@ -18,9 +18,8 @@ jobs:
       - name: Checkout main rikkahub repository
         uses: actions/checkout@v4
         with:
-          repository: EricLeeaaaaa/rikkahub
+          repository: rikkahub/rikkahub
           path: rikkahub
-          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -40,9 +39,15 @@ jobs:
 
       - name: Apply nightly patch
         run: |
-          # Apply patch file to app/build.gradle.kts
+          # Find all strings.xml files and replace the app_name.
+          find rikkahub/app/src/main/res -name strings.xml -exec \
+            sed -i 's|\(<string name="app_name">\).*\(</string>\)|\1Rikkahub Nightly\2|' {} +
+
+          # Append the rest of the configuration.
+          echo "" >> rikkahub/app/build.gradle.kts
           cat nightly-config/patch/nightly.gradle.kts >> rikkahub/app/build.gradle.kts
-          # Copy dummy google-services.json
+          
+          # Copy the dummy google-services.json for the nightly package name.
           cp nightly-config/patch/google-services.json rikkahub/app/google-services.json
 
       - name: Make gradlew executable
