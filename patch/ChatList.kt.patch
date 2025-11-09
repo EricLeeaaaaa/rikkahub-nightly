@@ -1,6 +1,6 @@
 --- a/app/src/main/java/me/rerere/rikkahub/ui/pages/chat/ChatList.kt
 +++ b/app/src/main/java/me/rerere/rikkahub/ui/pages/chat/ChatList.kt
- @@ -386,12 +386,12 @@ private fun BoxScope.MessageJumper(
+@@ -386,12 +386,12 @@ private fun BoxScope.MessageJumper(
  ) {
      AnimatedVisibility(
          visible = show,
