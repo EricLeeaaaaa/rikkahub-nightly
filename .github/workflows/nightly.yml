@@ -39,6 +39,9 @@ jobs:
 
       - name: Apply nightly patch
         run: |
+          # Apply ChatList.kt patch
+          patch -p1 -d rikkahub < nightly-config/patch/ChatList.kt.patch
+
           # Find all strings.xml files and replace the app_name.
           find rikkahub/app/src/main/res -name strings.xml -exec \
             sed -i 's|\(<string name="app_name">\).*\(</string>\)|\1Rikkahub Nightly\2|' {} +
