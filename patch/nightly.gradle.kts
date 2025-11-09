@@ -1,14 +1,11 @@
 // patch/nightly.gradle.kts
 
-val epochStart = 1762550400000L
-val millisInDay = 86400000L
-val daysSinceEpoch = ((System.currentTimeMillis() - epochStart) / millisInDay).toInt()
-val nightlyVersionCode = if (daysSinceEpoch > 0) daysSinceEpoch + 1 else 1
+val nightlyVersionCode = (System.currentTimeMillis() / 60000L).toInt()
 
 android.apply {
     defaultConfig {
-        versionName = "nightly"
         versionCode = nightlyVersionCode
+        versionName = "nightly-${nightlyVersionCode}"
     }
 
     buildTypes.configureEach {
