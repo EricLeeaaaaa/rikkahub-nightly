@@ -1,17 +1,12 @@
 // patch/nightly.gradle.kts
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
-import kotlin.math.max
-
 val epochStart = 1762550400000L // 2025-11-08 00:00:00 Asia/Shanghai
 val millisInDay = 86400000L
-val nightlyVersionCode = max(1, ((System.currentTimeMillis() - epochStart) / millisInDay).toInt() + 1)
+val nightlyVersionCode = kotlin.math.max(1, ((System.currentTimeMillis() - epochStart) / millisInDay).toInt() + 1)
 
-val timestamp = SimpleDateFormat("yyyyMMdd-HHmm", java.util.Locale.US).apply {
-    timeZone = TimeZone.getTimeZone("UTC")
-}.format(Date())
+val timestamp = java.text.SimpleDateFormat("yyyyMMdd-HHmm", java.util.Locale.US).apply {
+    timeZone = java.util.TimeZone.getTimeZone("UTC")
+}.format(java.util.Date())
 
 android.apply {
     defaultConfig {
