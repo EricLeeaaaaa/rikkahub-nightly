@@ -18,7 +18,7 @@ jobs:
       - name: Checkout main rikkahub repository
         uses: actions/checkout@v4
         with:
-          repository: rikkahub/rikkahub
+          repository: ericleeaaaaa/rikkahub
           path: rikkahub
 
       - name: Set up JDK 17
