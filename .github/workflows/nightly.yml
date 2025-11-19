@@ -56,10 +56,10 @@ jobs:
 
       - name: Build Release APK
         env:
-          GRADLE_OPTS: "-Xmx4g -Dkotlin.daemon.jvm.options=-Xmx4g"
+          GRADLE_OPTS: "-Xmx4g -Dkotlin.daemon.jvm.options=-Xmx3g"
         run: |
           cd rikkahub
-          ./gradlew --no-daemon --parallel --build-cache assembleRelease --stacktrace
+          ./gradlew --no-daemon --parallel --build-cache assembleRelease
 
       - name: Generate timestamp
         id: timestamp
