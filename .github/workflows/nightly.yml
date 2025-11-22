@@ -27,19 +27,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-#      - name: Setup Gradle cache
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('rikkahub/**/*.gradle*', 'rikkahub/**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Apply nightly patch
         run: |
-
           # Find all strings.xml files and replace the app_name.
           find rikkahub/app/src/main/res -name strings.xml -exec \
             sed -i 's|\(<string name="app_name">\).*\(</string>\)|\1Rikkahub Nightly\2|' {} +
